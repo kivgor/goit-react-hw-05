@@ -1,0 +1,26 @@
+.thumb {
+  display: flex;
+  gap: 20px;
+}
+.overviewThumb {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.listThumb {
+  display: flex;
+  gap: 10px;
+}
+.genresThumb {
+  display: flex;
+  gap: 10px;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.img {
+  height: 100%;
+}
