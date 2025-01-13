@@ -14,6 +14,10 @@ const HomePage = () => {
   }, []);
   // console.log(movies);
 
+  if (!movies) {
+    return <h2>Loading...</h2>;
+  }
+
   return (
     <>
       <p className={css.title}>Trending today</p>

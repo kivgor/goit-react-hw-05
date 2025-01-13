@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { NavLink, Outlet, useParams } from 'react-router-dom';
 import { fetchMoviesById } from '../../services/api';
 import css from './MovieDetailsPage.module.css';
+import clsx from 'clsx';
 
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
@@ -16,15 +17,21 @@ const MovieDetailsPage = () => {
     getMovie();
   }, [movieId]);
 
-  console.log(movie);
+  const buildLinkClass = ({ isActive }) => {
+    return clsx(css.link, isActive && css.active);
+  };
+
+  if (!movie) {
+    return <h2>Loading...</h2>;
+  }
 
   return (
-    <div>
+    <div className={css.pageThumb}>
       <h2>
         {movie.title}
         {movie.release_date && <span> ({movie.release_date.slice(0, 4)})</span>}
       </h2>
-      <div className={css.thumb}>
+      <div className={css.movieThumb}>
         <img
           className={css.img}
           src={'https://image.tmdb.org/t/p/w500/' + movie.backdrop_path}
@@ -56,9 +63,18 @@ const MovieDetailsPage = () => {
         <span className={css.bold}>Additional information</span>
       </p>
       <ul>
-        <li>Cast</li>
-        <li>Reviews</li>
+        <li>
+          <NavLink to="cast" className={buildLinkClass}>
+            Cast
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="reviews" className={buildLinkClass}>
+            Reviews
+          </NavLink>
+        </li>
       </ul>
+      <Outlet />
     </div>
   );
 };

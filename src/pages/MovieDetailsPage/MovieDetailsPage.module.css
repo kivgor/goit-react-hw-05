@@ -1,7 +1,14 @@
-.thumb {
+.pageThumb {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.movieThumb {
   display: flex;
   gap: 20px;
 }
+
 .overviewThumb {
   display: flex;
   flex-direction: column;
@@ -16,6 +23,10 @@
   display: flex;
   gap: 10px;
 }
+.active {
+  font-weight: bold;
+  font-size: 20px;
+}
 
 .bold {
   font-weight: bold;
@@ -23,4 +34,8 @@
 
 .img {
   height: 100%;
+}
+
+.link:hover {
+  text-decoration: underline;
 }
