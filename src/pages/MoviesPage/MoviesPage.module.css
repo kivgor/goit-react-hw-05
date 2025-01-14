@@ -1,0 +1,15 @@
+.form {
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.input {
+  border-radius: 5px;
+  padding: 10px;
+  width: 30%;
+}
+
+.button {
+  padding: 0 10px 0 10px;
+}
