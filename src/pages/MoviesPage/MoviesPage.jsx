@@ -3,11 +3,13 @@ import css from './MoviesPage.module.css';
 import toast from 'react-hot-toast';
 import { fetchMovieByQuery } from '../../services/api';
 import MovieList from '../../components/MovieList/MovieList';
+import { useSearchParams } from 'react-router-dom';
 
 const MoviesPage = () => {
   const [value, setValue] = useState('');
-  const [query, setQuery] = useState('');
   const [movies, setMovies] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const query = searchParams.get('query') ?? '';
 
   useEffect(() => {
     if (!query) {
@@ -42,21 +44,26 @@ const MoviesPage = () => {
       toast.error('Please change query!');
       return;
     }
-    setQuery(newQuery);
+    // setQuery(newQuery);
+    searchParams.set('query', newQuery);
+    setSearchParams(searchParams);
     // setImageList([]);
     // setPage(1);
   };
 
   const handleSubmit = evt => {
     evt.preventDefault();
-    // console.log(value);
     if (value === '') {
       toast.error('Please enter query!');
       return;
     }
     handleChangeQuery(value);
-    evt.target.reset();
+    // evt.target.reset();
   };
+
+  if (!movies) {
+    return <h2>Loading...</h2>;
+  }
 
   return (
     <>
@@ -68,7 +75,7 @@ const MoviesPage = () => {
           autoFocus
           placeholder="Search movies"
           name="search"
-          onChange={evt => setValue(evt.target.value.trim())}
+          onChange={evt => setValue(evt.target.value.toLowerCase().trim())}
         />
         <button className={css.button} type="submit">
           Search

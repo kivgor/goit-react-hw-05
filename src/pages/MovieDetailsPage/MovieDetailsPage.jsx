@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { NavLink, Outlet, useParams } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { NavLink, Outlet, useLocation, useParams } from 'react-router-dom';
 import { fetchMoviesById } from '../../services/api';
 import css from './MovieDetailsPage.module.css';
 import clsx from 'clsx';
@@ -7,7 +7,8 @@ import clsx from 'clsx';
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
   const [movie, setMovie] = useState('');
-  // console.log(movieId);
+  const location = useLocation();
+  const goBackRef = useRef(location.state) ?? '/movies';
 
   useEffect(() => {
     const getMovie = async () => {
@@ -20,6 +21,9 @@ const MovieDetailsPage = () => {
   const buildLinkClass = ({ isActive }) => {
     return clsx(css.link, isActive && css.active);
   };
+  const buildLinkGoBackClass = ({ isActive }) => {
+    return clsx(css.linkGoBack, isActive && css.active);
+  };
 
   if (!movie) {
     return <h2>Loading...</h2>;
@@ -27,6 +31,9 @@ const MovieDetailsPage = () => {
 
   return (
     <div className={css.pageThumb}>
+      <NavLink to={goBackRef.current} className={buildLinkGoBackClass}>
+        Go Back
+      </NavLink>
       <h2>
         {movie.title}
         {movie.release_date && <span> ({movie.release_date.slice(0, 4)})</span>}

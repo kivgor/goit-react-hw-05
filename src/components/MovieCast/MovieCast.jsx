@@ -7,6 +7,7 @@ import { ImUser } from 'react-icons/im';
 const MovieCast = () => {
   const { movieId } = useParams();
   const [movieCast, setMovieCast] = useState('');
+
   useEffect(() => {
     if (!movieId) return;
     const getMovieCast = async () => {
