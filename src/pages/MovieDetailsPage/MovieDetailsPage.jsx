@@ -1,22 +1,16 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import { NavLink, Outlet, useLocation, useParams } from 'react-router-dom';
 import { fetchMoviesById } from '../../services/api';
 import css from './MovieDetailsPage.module.css';
 import clsx from 'clsx';
+import { useHttp } from '../../components/hooks/useHttp';
 
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
-  const [movie, setMovie] = useState('');
+  const [movie] = useHttp(fetchMoviesById, movieId);
+
   const location = useLocation();
   const goBackRef = useRef(location.state) ?? '/movies';
-
-  useEffect(() => {
-    const getMovie = async () => {
-      const data = await fetchMoviesById(movieId);
-      setMovie(data);
-    };
-    getMovie();
-  }, [movieId]);
 
   const buildLinkClass = ({ isActive }) => {
     return clsx(css.link, isActive && css.active);

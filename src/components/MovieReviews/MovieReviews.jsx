@@ -1,20 +1,11 @@
-import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchMovieReviewsById } from '../../services/api';
 import css from './MovieReviews.module.css';
+import { useHttp } from '../hooks/useHttp';
 
 const MovieReviews = () => {
   const { movieId } = useParams();
-  const [movieReviews, setMovieReviews] = useState('');
-
-  useEffect(() => {
-    if (!movieId) return;
-    const getMovieReviews = async () => {
-      const { results } = await fetchMovieReviewsById(movieId);
-      setMovieReviews(results);
-    };
-    getMovieReviews();
-  }, [movieId]);
+  const [movieReviews] = useHttp(fetchMovieReviewsById, movieId);
 
   if (!movieReviews) {
     return <h2>Loading...</h2>;

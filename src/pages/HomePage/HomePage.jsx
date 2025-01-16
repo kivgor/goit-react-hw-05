@@ -1,27 +1,19 @@
-import { useEffect, useState } from 'react';
-import { fetchTrendingMovies } from '../../services/api';
+import { useHttp } from '../../components/hooks/useHttp';
 import MovieList from '../../components/MovieList/MovieList';
+import { fetchTrendingMovies } from '../../services/api';
 import css from './HomePage.module.css';
 
 const HomePage = () => {
-  const [movies, setMovies] = useState([]);
-  useEffect(() => {
-    const getMovie = async () => {
-      const data = await fetchTrendingMovies();
-      setMovies(data.results);
-    };
-    getMovie();
-  }, []);
-  // console.log(movies);
-
-  if (!movies) {
-    return <h2>Loading...</h2>;
-  }
+  const [movies, isLoading, isError] = useHttp(fetchTrendingMovies);
 
   return (
     <>
       <p className={css.title}>Trending today</p>
-      <MovieList movies={movies} />
+      {isLoading && <p>Loading data, please wait...</p>}
+      {isError && (
+        <p>Whoops, something went wrong! Please try reloading this page!</p>
+      )}
+      {movies.length > 0 && <MovieList movies={movies} />}
     </>
   );
 };

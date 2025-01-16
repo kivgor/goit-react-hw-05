@@ -6,7 +6,6 @@ export const fetchTrendingMovies = async () => {
   const { data } = await axios.get('/trending/movie/day', {
     params: {
       api_key: 'c3b14d60da4c75223be29cc6da55cbbb',
-      // language: 'en-US',
     },
   });
 
@@ -30,7 +29,7 @@ export const fetchMovieCastById = async movieId => {
     },
   });
 
-  return data;
+  return data.cast;
 };
 
 export const fetchMovieReviewsById = async movieId => {

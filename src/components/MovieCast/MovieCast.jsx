@@ -1,27 +1,16 @@
-import { useEffect, useState } from 'react';
 import { fetchMovieCastById } from '../../services/api';
 import { useParams } from 'react-router-dom';
 import css from './MovieCast.module.css';
 import { ImUser } from 'react-icons/im';
+import { useHttp } from '../hooks/useHttp';
 
 const MovieCast = () => {
   const { movieId } = useParams();
-  const [movieCast, setMovieCast] = useState('');
-
-  useEffect(() => {
-    if (!movieId) return;
-    const getMovieCast = async () => {
-      const { cast } = await fetchMovieCastById(movieId);
-      // console.log(cast);
-      setMovieCast(cast);
-    };
-    getMovieCast();
-  }, [movieId]);
+  const [movieCast] = useHttp(fetchMovieCastById, movieId);
 
   if (!movieCast) {
     return <h2>Loading...</h2>;
   }
-  console.log(!movieCast.length);
 
   movieCast.length;
   return (
