@@ -6,15 +6,14 @@ import { useHttp } from '../hooks/useHttp';
 
 const MovieCast = () => {
   const { movieId } = useParams();
-  const [movieCast] = useHttp(fetchMovieCastById, movieId);
+  const [movieCast, isLoading, isError] = useHttp(fetchMovieCastById, movieId);
 
-  if (!movieCast) {
-    return <h2>Loading...</h2>;
-  }
-
-  movieCast.length;
   return (
     <>
+      {isLoading && <p>Loading data, please wait...</p>}
+      {isError && (
+        <p>Whoops, something went wrong! Please try reloading this page!</p>
+      )}
       {!movieCast.length && <h2>No information about cast!</h2>}
       <ul className={css.listThumb}>
         {movieCast.map(movie => (

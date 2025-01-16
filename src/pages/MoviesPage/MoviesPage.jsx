@@ -11,18 +11,15 @@ const MoviesPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get('query') ?? '';
 
-  const [movies] = useHttp(fetchMovieByQuery, query);
+  const [movies, isLoading, isError] = useHttp(fetchMovieByQuery, query);
 
   const handleChangeQuery = newQuery => {
     if (newQuery === query) {
       toast.error('Please change query!');
       return;
     }
-
     searchParams.set('query', newQuery);
     setSearchParams(searchParams);
-    // setImageList([]);
-    // setPage(1);
   };
 
   const handleSubmit = evt => {
@@ -32,12 +29,7 @@ const MoviesPage = () => {
       return;
     }
     handleChangeQuery(value);
-    // evt.target.reset();
   };
-
-  if (!movies) {
-    return <h2>Loading...</h2>;
-  }
 
   return (
     <>
@@ -55,7 +47,11 @@ const MoviesPage = () => {
           Search
         </button>
       </form>
-      <MovieList movies={movies} />
+      {isLoading && <p>Loading data, please wait...</p>}
+      {isError && (
+        <p>Whoops, something went wrong! Please try reloading this page!</p>
+      )}
+      {movies.length > 0 && <MovieList movies={movies} />}
     </>
   );
 };

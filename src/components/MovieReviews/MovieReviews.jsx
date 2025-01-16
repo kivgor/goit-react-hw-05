@@ -5,15 +5,18 @@ import { useHttp } from '../hooks/useHttp';
 
 const MovieReviews = () => {
   const { movieId } = useParams();
-  const [movieReviews] = useHttp(fetchMovieReviewsById, movieId);
-
-  if (!movieReviews) {
-    return <h2>Loading...</h2>;
-  }
+  const [movieReviews, isLoading, isError] = useHttp(
+    fetchMovieReviewsById,
+    movieId
+  );
 
   return (
     <>
-      {!movieReviews.length && <h2>There are no reviews yet!</h2>}
+      {isLoading && <p>Loading data, please wait...</p>}
+      {isError && (
+        <p>Whoops, something went wrong! Please try reloading this page!</p>
+      )}
+      {!movieReviews.length && <h2>No information about reviews!</h2>}
       <ul className={css.list}>
         {movieReviews.map(review => (
           <li key={review.id} className={css.item}>

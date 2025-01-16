@@ -7,7 +7,7 @@ import { useHttp } from '../../components/hooks/useHttp';
 
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
-  const [movie] = useHttp(fetchMoviesById, movieId);
+  const [movie, isLoading, isError] = useHttp(fetchMoviesById, movieId);
 
   const location = useLocation();
   const goBackRef = useRef(location.state) ?? '/movies';
@@ -19,12 +19,13 @@ const MovieDetailsPage = () => {
     return clsx(css.linkGoBack, isActive && css.active);
   };
 
-  if (!movie) {
-    return <h2>Loading...</h2>;
-  }
-
   return (
     <div className={css.pageThumb}>
+      {isLoading && <p>Loading data, please wait...</p>}
+      {isError && (
+        <p>Whoops, something went wrong! Please try reloading this page!</p>
+      )}
+
       <NavLink to={goBackRef.current} className={buildLinkGoBackClass}>
         Go Back
       </NavLink>
